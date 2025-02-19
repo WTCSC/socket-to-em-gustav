@@ -6,5 +6,9 @@ import pyautogui
 # import struct
 # import paramiko
 
+class SocketOne:
+    def __init__(self):
+        pass
+
 # def start_client():
 #   ssh.client = 
