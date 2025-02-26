@@ -1,11 +1,16 @@
 import socket
 import threading
 
-#def connecting2client(client_address, client_socket):
-#    print(f"Connection from {client_address}")
-#
-#    try:
-#       client_socket.send(b"")
+def receive_messages(client_socket):
+    while True:
+        msg = client_socket.recv(1024).decode()
+        if not msg:
+            break
+        print(F"Client: {msg}")
+        client_socket.send(f"Server received: {msg}".encode())
+
+def send_messages(client_socket):
+    msg = input("")
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
