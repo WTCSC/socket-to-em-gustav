@@ -1,11 +1,19 @@
 import socket
-from socket import SocketOne
+import threading
+
+def connecting2client(client_address, client_socket):
+    print(f"Connection from {client_address}")
+    
+    try:
+        client_socket.send(b"")
+
+
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('0.0.0.0', 5000))
 
-    server.listen(6)
+    server.listen(2)
     print("Waiting for connection...")
 
     client, addr = server.accept()

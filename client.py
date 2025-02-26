@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 def main():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,6 +16,7 @@ def main():
 
       if msg.lower() == "/exit":
          print("Disconnecting...")
+         time.sleep(1)
          break
 
       response = client.recv(1024).decode()
