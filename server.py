@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 def receive_messages(client_socket):
     while True:
@@ -10,7 +11,12 @@ def receive_messages(client_socket):
         client_socket.send(f"Server received: {msg}".encode())
 
 def send_messages(client_socket):
-    msg = input("")
+    while True:
+        msg = input("Enter message: ")
+        if msg.lower == "/exit":
+            time.sleep(1)
+            client_socket.send("Disconnecting...")
+
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
