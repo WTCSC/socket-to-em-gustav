@@ -1,6 +1,5 @@
 import socket
-from socket import SocketOne
-
+import threading
 
 def main():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -13,7 +12,15 @@ def main():
       if not msg:
         break
       client.send(msg.encode())
+
+      if msg.lower() == "/exit":
+         print("Disconnecting...")
+         break
+
       response = client.recv(1024).decode()
       print(f"Server says: {response}")
 
   client.close()
+
+  if __name__ == "__main__":
+     main()
