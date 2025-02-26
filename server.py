@@ -1,19 +1,17 @@
 import socket
 import threading
 
-def connecting2client(client_address, client_socket):
-    print(f"Connection from {client_address}")
-    
-    try:
-        client_socket.send(b"")
-
-
+#def connecting2client(client_address, client_socket):
+#    print(f"Connection from {client_address}")
+#
+#    try:
+#       client_socket.send(b"")
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('0.0.0.0', 5000))
 
-    server.listen(2)
+    server.listen(1)
     print("Waiting for connection...")
 
     client, addr = server.accept()
@@ -28,8 +26,6 @@ def main():
 
     client.close()
     server.close()
-
-
 
 if __name__ == "__main__":
     main()
