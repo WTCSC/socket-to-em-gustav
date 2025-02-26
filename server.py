@@ -40,3 +40,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Add 'User Disconnected' Erase Convo?
