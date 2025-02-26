@@ -5,7 +5,7 @@ import time
 def main():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-  client.connect(('localhost, 5000'))
+  client.connect(('localhost', 5000))
   print("Connected to server")
 
   while True:
@@ -24,5 +24,5 @@ def main():
 
   client.close()
 
-  if __name__ == "__main__":
-     main()
+if __name__ == "__main__":
+   main()
