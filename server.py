@@ -2,6 +2,7 @@ import socket
 import threading
 import time
 
+
 def receive_messages(client_socket, client_username):
     while True:
         msg = client_socket.recv(1024).decode()
