@@ -17,7 +17,6 @@ def send_messages(client_socket):
             time.sleep(1)
             client_socket.send("Disconnecting...")
 
-
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('0.0.0.0', 5000))
@@ -41,5 +40,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-# Add 'User Disconnected' Erase Convo?
+# Add 'User Disconnected'
