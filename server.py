@@ -1,7 +1,6 @@
 import socket
 import threading
 import time
-import client
 
 def receive_messages(client_socket, client_username):
     while True:
@@ -23,7 +22,7 @@ def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # port = int(input("Enter port number: "))
-    port = 5001
+    port = 8080
     server.bind(('0.0.0.0', port))
 
     server.listen(1)
@@ -36,7 +35,7 @@ def main():
         msg = client.recv(1024).decode()
         if not msg:
             break
-        print(f"{client.client_username}: {msg}")
+        print(f"{msg}")
         client.send(f"{msg}".encode())
 
     client.close()

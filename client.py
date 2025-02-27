@@ -7,9 +7,10 @@ def main():
 
   server_ip = input("Enter server IP address: ")
 
-  port = int(input("Enter server port: "))
+  # port = int(input("Enter server port: "))
+  port = 8080
 
-  client_username = input("Enter Username: ")
+  # client_username = input("Enter Username: ")
 
   client.connect((server_ip, port))
   print("Connected to server")
