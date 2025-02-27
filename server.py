@@ -1,13 +1,14 @@
 import socket
 import threading
 import time
+import client
 
-def receive_messages(client_socket):
+def receive_messages(client_socket, client_username):
     while True:
         msg = client_socket.recv(1024).decode()
         if not msg:
             break
-        print(F"Client: {msg}")
+        print(F"{client_username}: {msg}")
         client_socket.send(f"Server received: {msg}".encode())
 
 def send_messages(client_socket):
@@ -16,10 +17,14 @@ def send_messages(client_socket):
         if msg.lower == "/exit":
             time.sleep(1)
             client_socket.send("Disconnecting...")
+            break
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('0.0.0.0', 5000))
+
+    # port = int(input("Enter port number: "))
+    port = 5001
+    server.bind(('0.0.0.0', port))
 
     server.listen(1)
     print("Waiting for connection...")
@@ -31,8 +36,8 @@ def main():
         msg = client.recv(1024).decode()
         if not msg:
             break
-        print(f"Recieved: {msg}")
-        client.send(f"server received: {msg}".encode())
+        print(f"{client.client_username}: {msg}")
+        client.send(f"{msg}".encode())
 
     client.close()
     server.close()

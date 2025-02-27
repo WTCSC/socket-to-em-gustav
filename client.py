@@ -9,7 +9,7 @@ def main():
 
   port = int(input("Enter server port: "))
 
-
+  client_username = input("Enter Username: ")
 
   client.connect((server_ip, port))
   print("Connected to server")
@@ -26,7 +26,7 @@ def main():
          break
 
       response = client.recv(1024).decode()
-      print(f"Server says: {response}")
+      print(f"<You> {response}")
 
   client.close()
 
