@@ -5,7 +5,13 @@ import time
 def main():
   client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-  client.connect(('localhost', 5000))
+  server_ip = input("Enter server IP address: ")
+
+  port = int(input("Enter server port: "))
+
+
+
+  client.connect((server_ip, port))
   print("Connected to server")
 
   while True:
