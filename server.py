@@ -4,6 +4,7 @@ import time
 import sys
 
 server_running = True
+client_sockets = []
 
 def receive_messages(client_socket, client_username):
     global server_running
@@ -49,11 +50,38 @@ def send_messages(client_socket):
                     pass
                 break
 
-            client_socket.send(msg.encode())
+            if server_running:
+                broadcast(msg, client_socket)
 
         except (ConnectionAbortedError, ConnectionResetError):
             print("\nClient disconnected.")
             break
+
+def broadcast(msg, sender_socket):
+    for client_socket in client_sockets:
+        if client_socket != sender_socket:
+            try:
+                client_socket.send(msg.encode())
+            except:
+                pass
+
+def handle_client(client_socket, client_username):
+    global server_running
+    try:
+        print(f"{client_username} connected.")
+        client_sockets.append(client_socket)
+        while server_running:
+            msg = client_socket.recv(1024).decode()
+            if not msg:
+                print(f"{client_username} disconnected.")
+                break
+            print(f"{client_username}: {msg}")
+            broadcast(msg, client_socket)
+    except:
+        print(f"Error with client {client_username}")
+    finally:
+        client_socket.close()
+        client_sockets.remove(client_socket)
 
 def main():
     global server_running
@@ -65,7 +93,7 @@ def main():
     try:
         server.bind(('0.0.0.0', port))
 
-        server.listen(2)
+        server.listen(6)
         print("Waiting for connection...")
 
         client, addr = server.accept()
