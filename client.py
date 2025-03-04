@@ -4,6 +4,9 @@ import time
 
 client_running = True
 
+def help():
+    print("1. Enter the server's IP address when prompted (e.g., 127.0.0.1 for local connections). \n2. Enter the port number (default is 8080). \n3. Choose a username for the session. \n4. Once connected, you can type your messages and they will be sent to the server. \n5. To disconnect from the server at any time, type '/exit' and press Enter. \n\nCommands: \n/exit \n- Disconnect from the server. \n/whoami \n- Shows your current username. \n/help \n- Repeats this message. \n\nTips: \n- The server must be running for the client to connect. \n- Messages from the server will appear with 'Server: ' prefix. \n- Your own messages will be prefixed with '<You>'.")
+
 def receive_messages(client_socket):
     global client_running
     while client_running:
@@ -43,7 +46,8 @@ def main():
 
         receive_thread = threading.Thread(target=receive_messages, args=(client,))
         receive_thread.start()
-
+        def whoami():
+            print(f"Your current username is: {client_username}")
         while client_running:
             msg = input("<You> ").strip()
             if msg.lower() == "/exit":
@@ -56,6 +60,11 @@ def main():
                 time.sleep(1)
                 client.close()
                 break
+            if msg.lower() == "/help":
+                help()
+
+            if msg.lower() == "/whoami":
+                whoami()
 
             if client_running:
                 try:
@@ -75,6 +84,7 @@ def main():
 
     print("Client closed.")
   #receive_thread.join()    
+
 
 
 if __name__ == "__main__":
