@@ -1,6 +1,7 @@
 import socket
 import threading
 import time
+import sys
 
 server_running = True
 
@@ -99,6 +100,9 @@ def main():
     except Exception as e:
         print(f"Error: {e}")
         server.close()
+
+thread1 = threading.Thread(target=main)
+thread2 = threading.Thread(target=main)
 
 
 if __name__ == "__main__":
