@@ -4,6 +4,8 @@ import threading
 server_running = True
 client_sockets = []
 
+
+
 def receive_messages(client_socket, client_username):
     global server_running
     while server_running:
