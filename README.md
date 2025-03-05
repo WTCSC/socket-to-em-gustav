@@ -12,7 +12,7 @@ These two Python scripts provide a simple implementation of a client-server chat
 ### Client Script: 
 - Connects to the server and sends messages to other clients. 
 - Receives messages from the server and displays them. 
-- Supports basic commands like `/exit` to disconnect and `/whoami` to display the current username.
+- Supports basic commands like `/exit` to disconnect and `/whoami` to display the current username and `/users` to display users that are actively connected.
 
 ---
 
@@ -23,11 +23,11 @@ These two Python scripts provide a simple implementation of a client-server chat
 
 --- 
 
-## Usage 
+### Usage
 
 ---
 
-### Running the Server 
+### Running the script
 1. Run the server script in one terminal window to start the server. 
 
 ```python 
@@ -54,5 +54,8 @@ to join the server.
 ## Troubleshooting
 
 ---
+
+## Example
+![Example picture](Capture.JPG)
 
 ## Extras
