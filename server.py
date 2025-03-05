@@ -1,7 +1,5 @@
 import socket
 import threading
-import time
-import sys
 
 server_running = True
 client_sockets = []
@@ -43,7 +41,6 @@ def send_messages(client_socket):
                     client_socket.send("Server is shutting down...".encode())
                 except:
                     pass
-                time.sleep(1)
                 try:
                     client_socket.close()
                 except:
@@ -61,7 +58,8 @@ def broadcast(msg, sender_socket):
     for client_socket in client_sockets:
         if client_socket != sender_socket:
             try:
-                client_socket.send(msg.encode())
+                sender_username = sender_socket.recv(1024).decode()
+                client_socket.send(f"{sender_username}: {msg}".encode())
             except:
                 pass
 
@@ -86,51 +84,17 @@ def handle_client(client_socket, client_username):
 def main():
     global server_running
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(('0.0.0.0', 8080))
+    server.listen()
+    print("Server created. Waiting for users...")
 
-    # port = int(input("Enter port number: "))
-    port = 8080
-
-    try:
-        server.bind(('0.0.0.0', port))
-
-        server.listen(6)
-        print("Waiting for connection...")
-
-        client, addr = server.accept()
-        print(f"Connected to {addr}")
-
-        client_username = client.recv(1024).decode()
+    while server_running:
+        client_socket, addr = server.accept()
+        client_username = client_socket.recv(1024).decode()
         print(f"{client_username} joined!")
+        threading.Thread(target=handle_client, args=(client_socket, addr, client_username)).start()
 
-        receive_thread = threading.Thread(target=receive_messages, args=(client, client_username))
-        send_thread = threading.Thread(target=send_messages, args=(client,))
-
-        receive_thread.daemon = True
-        send_thread.daemon = True
-
-        receive_thread.start()
-        send_thread.start()
-
-        try:
-            while server_running and (receive_thread.is_alive() or send_thread.is_alive()):
-                time.sleep(1)
-        except KeyboardInterrupt:
-            print("\nInterrupted by user. Shutting down...")
-            server_running = False
-
-        try:
-            client.close()
-        except:
-            pass
-        print("\nClosing server...")
-        server.close()
-
-    except Exception as e:
-        print(f"Error: {e}")
-        server.close()
-
-thread1 = threading.Thread(target=main)
-thread2 = threading.Thread(target=main)
+    print("Server closed.")
 
 
 if __name__ == "__main__":
