@@ -13,22 +13,18 @@ def receive_messages(client_socket):
         try:
             response = client_socket.recv(1024).decode()
             if not response:
-                print("\nServer has disconnected.")
-                client_running = False
+                print(f"\n{client_username} has disconnected.")
                 break
-
-
-            print(f"\rServer: {response}") #\nEnter message: ", end="", flush=True)
-            print("<You> ", end="", flush=True)
-
-        except ConnectionResetError:
+            print(f"\r{response}\n<You> ", end="", flush=True)
+        except (ConnectionResetError, ConnectionAbortedError):
             if client_running:
-                print("\nLost connection to server.")
-            client_running = False
+                print("\nLost connection to the server.")
             break
+        except Exception as e:
+            print(f"\nError receiving message: {e}")
 
 def main():
-    global client_running
+    global client_running, client_username
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     server_ip = input("Enter server IP address: ").strip() # 127.0.0.1
@@ -61,7 +57,6 @@ def main():
                 except:
                     pass
                 time.sleep(1)
-                client.close()
                 break
 
             if msg.lower() == "/help":
@@ -81,12 +76,15 @@ def main():
     except ConnectionRefusedError:
         print("Failed to connect to server. Make sure server is running.")
 
+    finally:
+        client.close()
+        receive_thread.join()
+        print("Client closed.")
       # print(f"<You> {msg}\n", end='', flush=True)
 
       #response = client.recv(1024).decode()
       #print(f"<You> {response}")
 
-    print("Client closed.")
   #receive_thread.join()    
 
 
