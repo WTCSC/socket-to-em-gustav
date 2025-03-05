@@ -17,7 +17,7 @@ def broadcast(message, sender_socket=None):
 
 # Function to handle client and communication with a single client
 def handle_client(client_socket, client_username): 
-    global server_running
+    global server_running # Control server running status
     try:
         print(f"{client_username} connected.") # Prints connect message when a client connects
         client_sockets.append(client_socket) # Add the client to the client list
@@ -50,21 +50,22 @@ def handle_client(client_socket, client_username):
 
 # Function to run server
 def main():
-    global server_running
+    global server_running # Use the global server_running flag to control the server
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Create a server socket
     server.bind(('0.0.0.0', 8080)) # Bind the server to listen on all network interfaces on (0.0.0.0) and on port 8080
     server.listen() # Start listening to users connecting
     print("Server created. Waiting for users...") # Print waiting message to server
 
-    while server_running:
-        client_socket, addr = server.accept()
-        print(f"Connection from {addr} established.")
-        client_username = client_socket.recv(1024).decode()
+    while server_running: # Keep the server running as long as server_running = True
+        client_socket, addr = server.accept() # Accept a new client connection
+        print(f"Connection from {addr} established.") # Print client address when they connect
+        client_username = client_socket.recv(1024).decode() # Receive the username from the client
         print(f"{client_username} joined!") # Prints client username that joined
-        threading.Thread(target=handle_client, args=(client_socket, client_username)).start()
+        threading.Thread(target=handle_client, args=(client_socket, client_username)).start() # Start a new thread to handle the client.
 
-    print("Server closed.")
+    print("Server closed.") # Print when the server is closed.
 
 
+# Start server when the script is run
 if __name__ == "__main__":
     main()
