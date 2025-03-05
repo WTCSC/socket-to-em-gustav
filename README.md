@@ -25,6 +25,11 @@ These two Python scripts provide a simple implementation of a client-server chat
 
 ### Usage
 
+
+### Commands
+
+`/help` - Shows you
+
 ---
 
 ### Running the script
