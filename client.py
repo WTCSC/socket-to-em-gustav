@@ -46,10 +46,13 @@ def main():
 
         receive_thread = threading.Thread(target=receive_messages, args=(client,))
         receive_thread.start()
+
         def whoami():
             print(f"Your current username is: {client_username}")
+
         while client_running:
             msg = input("<You> ").strip()
+
             if msg.lower() == "/exit":
                 print("\nDisconnecting...")
                 client_running = False
@@ -60,13 +63,14 @@ def main():
                 time.sleep(1)
                 client.close()
                 break
+
             if msg.lower() == "/help":
                 help()
 
-            if msg.lower() == "/whoami":
+            elif msg.lower() == "/whoami":
                 whoami()
 
-            if client_running:
+            elif client_running:
                 try:
                     client.send(msg.encode())
                 except:
@@ -89,5 +93,3 @@ def main():
 
 if __name__ == "__main__":
    main()
-
-# test
