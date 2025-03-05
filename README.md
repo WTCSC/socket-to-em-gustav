@@ -58,4 +58,6 @@ to join the server.
 ## Example
 ![Example picture](Capture.JPG)
 
+---
+
 ## Extras
