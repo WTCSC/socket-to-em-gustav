@@ -5,7 +5,7 @@ import time
 client_running = True
 
 def help():
-    print("1. Enter the server's IP address when prompted (e.g., 127.0.0.1 for local connections). \n2. Enter the port number (default is 8080). \n3. Choose a username for the session. \n4. Once connected, you can type your messages and they will be sent to the server. \n5. To disconnect from the server at any time, type '/exit' and press Enter. \n\nCommands: \n/exit \n- Disconnect from the server. \n/whoami \n- Shows your current username. \n/help \n- Repeats this message. \n\nTips: \n- The server must be running for the client to connect. \n- Messages from the server will appear with 'Server: ' prefix. \n- Your own messages will be prefixed with '<You>'.")
+    print("1. Enter the server's IP address when prompted (e.g., 127.0.0.1 for local connections). \n2. Enter the port number (default is 8080). \n3. Choose a username for the session. \n4. Once connected, you can type your messages and they will be sent to the server. \n5. To disconnect from the server at any time, type '/exit' and press Enter. \n\nCommands: \n/exit \n- Disconnect from the server. \n/whoami \n- Shows your current username. \n/help \n- Repeats this message. \n/users \n- Shows the list of currently connected users. \n\nTips: \n- The server must be running for the client to connect. \n- Messages from the server will appear with 'Server: ' prefix. \n- Your own messages will be prefixed with '<You>'.")
 
 def receive_messages(client_socket):
     global client_running
@@ -22,6 +22,7 @@ def receive_messages(client_socket):
             break
         except Exception as e:
             print(f"\nError receiving message: {e}")
+            break
 
 def main():
     global client_running, client_username
@@ -64,6 +65,14 @@ def main():
 
             elif msg.lower() == "/whoami":
                 whoami()
+
+            elif msg.lower() == "/users":
+                try:
+                    client.send("/users".encode())
+                except:
+                    print("\nConnection lost. Can't send message.")
+                    client_running = False
+                    break
 
             elif client_running:
                 try:

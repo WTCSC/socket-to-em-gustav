@@ -3,6 +3,7 @@ import threading
 
 server_running = True
 client_sockets = []
+connected_usernames = []
 
 def broadcast(message, sender_socket=None):
     for client_socket in client_sockets:
@@ -18,18 +19,32 @@ def handle_client(client_socket, client_username):
     try:
         print(f"{client_username} connected.")
         client_sockets.append(client_socket)
+        connected_usernames.append(client_username)
+        broadcast(f"{client_username} has joined the chat.", client_socket)
+
         while server_running:
             msg = client_socket.recv(1024).decode()
             if not msg:
                 print(f"{client_username} disconnected.")
                 break
-            print(f"{client_username}: {msg}")
-            broadcast(f"{client_username}: {msg}", client_socket)
+            
+            if msg.lower() == "/exit":
+                print(f"{client_username} has left the chat.")
+                broadcast(f"{client_username} has left the chat.", client_socket)
+                break
+            elif msg.lower() == "/users":
+                user_list = ", ".join(connected_usernames)
+                client_socket.send(f"Connected users: {user_list}".encode())
+            else:
+                print(f"{client_username}: {msg}")
+                broadcast(f"{client_username}: {msg}", client_socket)
+
     except Exception as e:
         print(f"Error with client {client_username}: {e}")
     finally:
         client_socket.close()
         client_sockets.remove(client_socket)
+        connected_usernames.remove(client_username)
 
 def main():
     global server_running
@@ -39,7 +54,8 @@ def main():
     print("Server created. Waiting for users...")
 
     while server_running:
-        client_socket = server.accept()
+        client_socket, addr = server.accept()
+        print(f"Connection from {addr} established.")
         client_username = client_socket.recv(1024).decode()
         print(f"{client_username} joined!")
         threading.Thread(target=handle_client, args=(client_socket, client_username)).start()
